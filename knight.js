@@ -4,13 +4,11 @@ class Node {
         this.next = null;
     }
 }
-
 class Graph {
     constructor() {
         this.list = this.createGraph();
         this.length = this.list.length;
     }
-
     createGraph() {
         let board = [];
         for (let i = 0; i < 8; i++) {
@@ -22,7 +20,6 @@ class Graph {
         }
         return board;
     }
-
     addEdge(coord, edge) {
         let vertex = this.find(coord);
         while (vertex.next) {
@@ -30,12 +27,10 @@ class Graph {
         }
         vertex.next = new Node(edge);
     }
-
     find(coord) {
         let index = coord[0] * 8 + coord[1];
         return this.list[index];
     }
-
     printGraph() {
         for (let i = 0; i < this.list.length; i++) {
             let string = "vertex [" + this.list[i].coord + "] -> ";
@@ -54,7 +49,6 @@ class Graph {
     }
 
 }
-
 function knightMoves(start, end) {
     const paths = [];
     const visited = new Set();
@@ -62,24 +56,21 @@ function knightMoves(start, end) {
     queue.push([start, [start]]);
     const dist = new Array(graph.length).fill(Infinity);
     dist[graph.findIndex(start)] = 0;
-
+    visited.add(start.toString);
     while (queue.length > 0) {
         let [vertex, path] = queue.shift();
-        visited.add(vertex);
         let edge = graph.find(vertex).next;
         if (vertex.toString() == end.toString()) {
             paths.push(path);
         }
         while (edge) {
-            if (!visited.has(edge.coord) && dist[graph.findIndex(edge.coord)] > dist[graph.findIndex(vertex)]) {
-                    dist[graph.findIndex(edge.coord)] = dist[graph.findIndex(vertex)] + 1;
-                    queue.push([edge.coord, [...path, edge.coord]]);
+            if (!visited.has(edge.coord.toString())) {
+                queue.push([edge.coord, [...path, edge.coord]]);
             }
             edge = edge.next;
         }
+        visited.add(vertex.toString());
     }
-    //console.log(dist);
-
     console.log(`Fastest Routes from ${start} to ${end}`)
     paths.forEach(element => console.log(element));
 }
